@@ -6,13 +6,112 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginBottom="11dp"
+        app:layout_constraintBottom_toTopOf="@+id/cardView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/main_button_viewedit1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
+                android:layout_marginEnd="21dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="18dp"
+                android:text="View / Edit"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView4"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="197dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="31dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="30dp"
+                android:text="ID | Item Name | Category | Date"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/main_button_viewedit1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginBottom="340dp"
+        android:layout_marginTop="11dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView" >
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/main_button_viewedit2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
+                android:layout_marginEnd="21dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="18dp"
+                android:text="View / Edit"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView5"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="197dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="31dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="30dp"
+                android:text="ID | Item Name | Category | Date"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/main_button_viewedit2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="73dp"
+        android:layout_height="73dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="295dp"
+        android:layout_marginTop="238dp"
+        android:clickable="true"
+        app:backgroundTint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView2"
+        app:srcCompat="@android:drawable/ic_input_add" />
 
 </android.support.constraint.ConstraintLayout>
