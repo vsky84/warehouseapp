@@ -13,9 +13,6 @@
     <item android:id="@+id/menu_main_qrcode"
         android:title="Scan QR Code"
         app:showAsAction="never"/>
-    <item android:id="@+id/menu_main_settings"
-        android:title="Settings"
-        app:showAsAction="never"/>
     <item android:id="@+id/menu_main_credits"
         android:title="Credits"
         app:showAsAction="never"/>
