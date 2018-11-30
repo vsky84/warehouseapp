@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="app.hairmelodysalon.com.noname_hairmelodysalon">
-
+    <uses-feature android:name="android.hardware.camera" android:required="false"></uses-feature>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,10 +17,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SearchActivity" />
         <activity android:name=".QrcodeActivity" />
         <activity android:name=".CreditsActivity" />
-        <activity android:name=".SettingsActivity" />
         <activity android:name=".ItemDetailsActivity" />
         <activity android:name=".NewItemActivity" />
     </application>

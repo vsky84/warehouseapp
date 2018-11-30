@@ -15,6 +15,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Item> displayedItems;
     String[] categories;
     Button btnViewEdit1, btnViewEdit2;
+    private IntentIntegrator intentIntegrator;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,10 +60,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
-            case R.id.menu_main_search:
-                Intent intent1 = new Intent(MainActivity.this, SearchActivity.class);
-                startActivity(intent1);
-                return true;
             case R.id.menu_main_home:
                 return true;
             case R.id.menu_main_filter:
@@ -76,8 +81,8 @@ public class MainActivity extends AppCompatActivity {
                 dialogObj.show();
                 return true;
             case R.id.menu_main_qrcode:
-                Intent intent2 = new Intent(MainActivity.this, QrcodeActivity.class);
-                startActivity(intent2);
+                intentIntegrator = new IntentIntegrator(this);
+                intentIntegrator.initiateScan();
                 return true;
             case R.id.menu_main_credits:
                 Intent intent4 = new Intent(MainActivity.this, CreditsActivity.class);
@@ -95,6 +100,24 @@ public class MainActivity extends AppCompatActivity {
 
         rvwMain.setLayoutManager(layoutManager);
         rvwMain.setAdapter(itemAdapter);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult Result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (Result != null) {
+            if (Result.getContents() == null) {
+                Toast.makeText(this, "Hasil tidak ditemukan", Toast.LENGTH_SHORT).show();
+            } else {
+                try {
+                    JSONObject object = new JSONObject(Result.getContents());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, Result.getContents(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
     private void prePopulateDummy() {
         items.add(new Item("01","Hairdressing1","Hairdressing",2));
