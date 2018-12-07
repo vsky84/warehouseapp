@@ -7,9 +7,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -17,7 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -33,9 +33,15 @@ public class MainActivity extends AppCompatActivity {
     private List<Item> items;
     private List<Item> displayedItems;
     String[] categories;
+    EditText searchText;
     Button btnViewEdit1, btnViewEdit2;
     private IntentIntegrator intentIntegrator;
     private static int REQUEST_CODE_NEWITEM=10001;
+    private static final String PREFERENCES_FILENAME = "search";
+    private static final int PREFERENCES_MODE = Context.MODE_PRIVATE;
+    private static final int REQUEST_CODE_SEARCH =200;;
+    private Button buttonSearch;
+    String pickedCategoryOption;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +51,16 @@ public class MainActivity extends AppCompatActivity {
         displayedItems=items;
         refreshViewAdapter();
         categories = new String[]{"Hairdressing","Shampoo & Conditioner","Spa Supplies","Treatment Supplies"};
+        searchText = findViewById(R.id.searchText);
+        buttonSearch = findViewById(R.id.btnSearch);
+
+        buttonSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displayedItems = searchForItems();
+                refreshViewAdapter();
+            }
+        });
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,9 +77,11 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         switch(item.getItemId()) {
             case R.id.menu_main_home:
+                displayedItems = items;
+                refreshViewAdapter();
                 return true;
             case R.id.menu_main_filter:
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MainActivity.this);
@@ -71,6 +89,15 @@ public class MainActivity extends AppCompatActivity {
                 dialogBuilder.setSingleChoiceItems(categories, 0, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        pickedCategoryOption = categories[which];
+                        List <Item> categoryResult = new ArrayList<>();
+                        for(Item item : items) {
+                            if(item.getName().contains(pickedCategoryOption)) {
+                                categoryResult.add(item);
+                            }
+                        }
+                        displayedItems = categoryResult;
+                        refreshViewAdapter();
                         dialog.dismiss();
                     }
                 });
@@ -95,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
     }
+
+
     private void refreshViewAdapter() {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
         ItemAdapter itemAdapter= new ItemAdapter(this,R.layout.activity_item_card,displayedItems);
@@ -103,6 +132,17 @@ public class MainActivity extends AppCompatActivity {
 
         rvwMain.setLayoutManager(layoutManager);
         rvwMain.setAdapter(itemAdapter);
+    }
+    public List<Item> searchForItems() {
+
+        String search = searchText.getText().toString();
+        List<Item> itemResults = new ArrayList<>();
+        for(Item item : items) {
+            if(item.getName().toLowerCase().contains(search)) {
+                itemResults.add(item);
+            }
+        }
+        return itemResults;
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -124,6 +164,9 @@ public class MainActivity extends AppCompatActivity {
                 Item item = data.getExtras().getParcelable("NEWITEM");
                 items.add(item);
                 displayedItems=items;
+            }
+            if(requestCode== REQUEST_CODE_SEARCH && resultCode==RESULT_OK) {
+                displayedItems = searchForItems();
                 refreshViewAdapter();
             }
         }
