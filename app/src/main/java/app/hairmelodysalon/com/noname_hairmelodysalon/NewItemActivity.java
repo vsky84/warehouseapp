@@ -66,7 +66,7 @@ public class NewItemActivity extends AppCompatActivity {
         btnCreateItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean isIdFilled=false,isNameFilled=false,isStockFilled=false;
+                boolean isIdFilled=false,isNameFilled=false;
                 Intent returnIntent = new Intent();
                 Item item;
                 if(TextUtils.isEmpty(txtId.getText().toString())) {
@@ -80,11 +80,9 @@ public class NewItemActivity extends AppCompatActivity {
                 }
                 else isNameFilled=true;
                 if(TextUtils.isEmpty(txtStock.getText().toString())) {
-                    isStockFilled=false;
-                    txtStock.setError("The item name cannot be empty");
+                    txtStock.setText(String.valueOf(0));
                 }
-                else isStockFilled=true;
-                if(isIdFilled && isNameFilled && isStockFilled) {
+                if(isIdFilled && isNameFilled) {
                     int radioButtonID = groupCategory.getCheckedRadioButtonId();
                     View radioButton = groupCategory.findViewById(radioButtonID);
                     int idx = groupCategory.indexOfChild(radioButton);

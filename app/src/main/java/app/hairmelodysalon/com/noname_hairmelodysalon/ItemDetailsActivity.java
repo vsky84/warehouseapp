@@ -55,8 +55,11 @@ public class ItemDetailsActivity extends AppCompatActivity {
         btnMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentStock=currentStock-1;
-                txtStock.setText(String.valueOf(currentStock));
+                if(currentStock>0) {
+                    currentStock=currentStock-1;
+                    txtStock.setText(String.valueOf(currentStock));
+                }
+
             }
         });
     }

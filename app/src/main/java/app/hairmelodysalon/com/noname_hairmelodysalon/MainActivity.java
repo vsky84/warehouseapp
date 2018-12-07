@@ -12,6 +12,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -34,11 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private List<Item> displayedItems;
     String[] categories;
     EditText searchText;
-    Button btnViewEdit1, btnViewEdit2;
     private IntentIntegrator intentIntegrator;
     private static int REQUEST_CODE_NEWITEM=10001;
-    private static final String PREFERENCES_FILENAME = "search";
-    private static final int PREFERENCES_MODE = Context.MODE_PRIVATE;
     private static final int REQUEST_CODE_SEARCH =200;;
     private Button buttonSearch;
     String pickedCategoryOption;
@@ -67,6 +66,23 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent1 = new Intent(MainActivity.this, NewItemActivity.class);
                 startActivityForResult(intent1,REQUEST_CODE_NEWITEM);
+            }
+        });
+        searchText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                displayedItems = searchForItems();
+                refreshViewAdapter();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
     }
@@ -135,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public List<Item> searchForItems() {
 
-        String search = searchText.getText().toString();
+        String search = searchText.getText().toString().toLowerCase();
         List<Item> itemResults = new ArrayList<>();
         for(Item item : items) {
             if(item.getName().toLowerCase().contains(search)) {
@@ -164,10 +180,6 @@ public class MainActivity extends AppCompatActivity {
                 Item item = data.getExtras().getParcelable("NEWITEM");
                 items.add(item);
                 displayedItems=items;
-            }
-            if(requestCode== REQUEST_CODE_SEARCH && resultCode==RESULT_OK) {
-                displayedItems = searchForItems();
-                refreshViewAdapter();
             }
         }
     }
