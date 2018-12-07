@@ -6,26 +6,35 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.support.v4.content.ContextCompat;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 public class NewItemActivity extends AppCompatActivity {
     private static final int CAMERA_REQUEST = 1888;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
     private ImageView imageView;
+    private boolean imageAdded=false;
     Button btnCreateItem, btnCamera;
-
+    EditText txtId, txtName, txtStock;
+    RadioGroup groupCategory;
+    Bitmap takenImage,defaultImg;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            imageView.setImageBitmap(photo);
+            takenImage = (Bitmap) data.getExtras().get("data");
+            imageView.setImageBitmap(takenImage);
+            imageAdded=true;
         }
     }
 
@@ -33,6 +42,11 @@ public class NewItemActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_item);
+        defaultImg = (BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.boxicon));
+        groupCategory = findViewById(R.id.new_item_category_radiogroup);
+        txtId = findViewById(R.id.new_item_id);
+        txtName = findViewById(R.id.new_item_name);
+        txtStock = findViewById(R.id.new_item_stock);
         imageView = findViewById(R.id.imageView3);
         btnCreateItem = findViewById(R.id.new_item_btnCreate);
         btnCamera = findViewById(R.id.btnCamera);
@@ -52,7 +66,43 @@ public class NewItemActivity extends AppCompatActivity {
         btnCreateItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                boolean isIdFilled=false,isNameFilled=false,isStockFilled=false;
+                Intent returnIntent = new Intent();
+                Item item;
+                if(TextUtils.isEmpty(txtId.getText().toString())) {
+                    isIdFilled=false;
+                    txtId.setError("The ID field cannot be empty");
+                }
+                else isIdFilled=true;
+                if(TextUtils.isEmpty(txtName.getText().toString())) {
+                    isNameFilled=false;
+                    txtName.setError("The item name cannot be empty");
+                }
+                else isNameFilled=true;
+                if(TextUtils.isEmpty(txtStock.getText().toString())) {
+                    isStockFilled=false;
+                    txtStock.setError("The item name cannot be empty");
+                }
+                else isStockFilled=true;
+                if(isIdFilled && isNameFilled && isStockFilled) {
+                    int radioButtonID = groupCategory.getCheckedRadioButtonId();
+                    View radioButton = groupCategory.findViewById(radioButtonID);
+                    int idx = groupCategory.indexOfChild(radioButton);
+                    RadioButton rb = (RadioButton) groupCategory.getChildAt(idx);
+                    String categoryText = rb.getText().toString();
+                    if(imageAdded) {
+                        item = new Item(takenImage,txtId.getText().toString(),txtName.getText().toString(),categoryText,Integer.valueOf(txtStock.getText().toString()));
+                        returnIntent.putExtra("NEWITEM",item);
+                        setResult(RESULT_OK,returnIntent);
+                    }
+                    else {
+                        item = new Item(defaultImg,txtId.getText().toString(),txtName.getText().toString(),categoryText,Integer.valueOf(txtStock.getText().toString()));
+                        returnIntent.putExtra("NEWITEM",item);
+                        setResult(RESULT_OK,returnIntent);
+                    }
+                    finish();
+                }
+
             }
         });
     }

@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @Override
     public void onBindViewHolder(@NonNull ItemAdapter.ItemViewHolder holder, int position) {
         Item item = items.get(position);
-
+        holder.imageView.setImageBitmap(item.getPic());
         holder.textID.setText(item.getId());
         holder.textName.setText(item.getName());
         holder.textCategory.setText(item.getCategory());
@@ -47,13 +48,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
+        private ImageView imageView;
         private TextView textID;
         private TextView textName;
         private TextView textCategory;
         private TextView textStock;
         public ItemViewHolder(final View itemView) {
             super(itemView);
-
+            imageView = itemView.findViewById(R.id.imageView);
             textID = itemView.findViewById(R.id.textView_card_id);
             textName = itemView.findViewById(R.id.textView_card_name);
             textCategory = itemView.findViewById(R.id.textView_card_category);

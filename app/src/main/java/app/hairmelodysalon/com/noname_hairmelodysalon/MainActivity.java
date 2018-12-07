@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     String[] categories;
     Button btnViewEdit1, btnViewEdit2;
     private IntentIntegrator intentIntegrator;
+    private static int REQUEST_CODE_NEWITEM=10001;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent1 = new Intent(MainActivity.this, NewItemActivity.class);
-                startActivity(intent1);
+                startActivityForResult(intent1,REQUEST_CODE_NEWITEM);
             }
         });
     }
@@ -117,20 +120,27 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
+            if(requestCode==REQUEST_CODE_NEWITEM && resultCode==RESULT_OK && data!=null) {
+                Item item = data.getExtras().getParcelable("NEWITEM");
+                items.add(item);
+                displayedItems=items;
+                refreshViewAdapter();
+            }
         }
     }
     private void prePopulateDummy() {
-        items.add(new Item("01","Hairdressing1","Hairdressing",2));
-        items.add(new Item("02","Hairdressing2","Hairdressing",4));
-        items.add(new Item("03","Hairdressing3","Hairdressing",6));
-        items.add(new Item("04","Shampoo & Conditioner1","Shampoo & Conditioner",6));
-        items.add(new Item("05","Shampoo & Conditioner2","Shampoo & Conditioner",9));
-        items.add(new Item("06","Shampoo & Conditioner3","Shampoo & Conditioner",1));
-        items.add(new Item("07","Spa & Supplies1","Spa & Supplies",1));
-        items.add(new Item("08","Spa & Supplies2","Spa & Supplies",2));
-        items.add(new Item("09","Spa & Supplies3","Spa & Supplies",3));
-        items.add(new Item("10","Treatment Supplies1","Treatment Supplies",2));
-        items.add(new Item("11","Treatment Supplies2","Treatment Supplies",2));
-        items.add(new Item("12","Treatment Supplies3","Treatment Supplies",2));
+        Bitmap defaultImg = (BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.boxicon));
+        items.add(new Item(defaultImg,"01","Hairdressing1","Hairdressing",2));
+        items.add(new Item(defaultImg,"02","Hairdressing2","Hairdressing",4));
+        items.add(new Item(defaultImg,"03","Hairdressing3","Hairdressing",6));
+        items.add(new Item(defaultImg,"04","Shampoo & Conditioner1","Shampoo & Conditioner",6));
+        items.add(new Item(defaultImg,"05","Shampoo & Conditioner2","Shampoo & Conditioner",9));
+        items.add(new Item(defaultImg,"06","Shampoo & Conditioner3","Shampoo & Conditioner",1));
+        items.add(new Item(defaultImg,"07","Spa & Supplies1","Spa & Supplies",1));
+        items.add(new Item(defaultImg,"08","Spa & Supplies2","Spa & Supplies",2));
+        items.add(new Item(defaultImg,"09","Spa & Supplies3","Spa & Supplies",3));
+        items.add(new Item(defaultImg,"10","Treatment Supplies1","Treatment Supplies",2));
+        items.add(new Item(defaultImg,"11","Treatment Supplies2","Treatment Supplies",2));
+        items.add(new Item(defaultImg,"12","Treatment Supplies3","Treatment Supplies",2));
     }
 }
