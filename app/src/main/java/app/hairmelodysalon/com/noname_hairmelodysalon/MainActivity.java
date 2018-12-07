@@ -92,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
     }
+
+
     private void refreshViewAdapter() {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
         ItemAdapter itemAdapter= new ItemAdapter(this,R.layout.activity_item_card,displayedItems);
