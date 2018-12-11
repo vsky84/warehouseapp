@@ -38,9 +38,10 @@ public class MainActivity extends AppCompatActivity {
     EditText searchText;
     private IntentIntegrator intentIntegrator;
     private static int REQUEST_CODE_NEWITEM=10001;
-    private static final int REQUEST_CODE_SEARCH =200;;
+    private static final int REQUEST_CODE_UPDATESTOCK =10002;
     private Button buttonSearch;
     String pickedCategoryOption;
+    private RecyclerView recView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         categories = new String[]{"Hairdressing","Shampoo & Conditioner","Spa Supplies","Treatment Supplies"};
         searchText = findViewById(R.id.searchText);
         buttonSearch = findViewById(R.id.btnSearch);
+        recView = findViewById(R.id.recView);
 
         buttonSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,12 +169,12 @@ public class MainActivity extends AppCompatActivity {
             if (Result.getContents() == null) {
                 Toast.makeText(this, "Hasil tidak ditemukan", Toast.LENGTH_SHORT).show();
             } else {
-                try {
-                    JSONObject object = new JSONObject(Result.getContents());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(this, Result.getContents(), Toast.LENGTH_SHORT).show();
-                }
+                Bitmap defaultImg = (BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.boxicon));
+                String[] tokens = Result.getContents().split("\\#");
+                Item item = new Item(defaultImg,tokens[0],tokens[1],tokens[2],Integer.valueOf(tokens[3]));
+                Intent intent = new Intent(MainActivity.this,NewItemActivity.class);
+                intent.putExtra("QRCODE",item);
+                startActivityForResult(intent,REQUEST_CODE_NEWITEM);
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -180,6 +182,13 @@ public class MainActivity extends AppCompatActivity {
                 Item item = data.getExtras().getParcelable("NEWITEM");
                 items.add(item);
                 displayedItems=items;
+                refreshViewAdapter();
+            }
+            if(requestCode==REQUEST_CODE_UPDATESTOCK && resultCode==RESULT_OK && data!=null) {
+                int index = data.getExtras().getInt("ITEMPOS");
+                items.set(index,(Item)data.getExtras().getParcelable("UPDATEDITEM"));
+                displayedItems=items;
+                refreshViewAdapter();
             }
         }
     }

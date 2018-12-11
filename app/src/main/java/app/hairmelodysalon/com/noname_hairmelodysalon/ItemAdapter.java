@@ -36,10 +36,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     public void onBindViewHolder(@NonNull ItemAdapter.ItemViewHolder holder, int position) {
         Item item = items.get(position);
         holder.imageView.setImageBitmap(item.getPic());
-        holder.textID.setText(item.getId());
+        holder.textID.setText("ID: " + item.getId());
         holder.textName.setText(item.getName());
         holder.textCategory.setText(item.getCategory());
-        holder.textStock.setText(String.valueOf(item.getStock()));
+        holder.textStock.setText(String.valueOf("Stock: " + item.getStock()));
     }
 
     @Override
@@ -65,7 +65,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     Intent intent = new Intent(recyclerContext,ItemDetailsActivity.class);
-                    ((Activity) recyclerContext).startActivity(intent);
+                    intent.putExtra("ITEMCHOICE",items.get(position));
+                    intent.putExtra("ITEMPOS",position);
+                    ((Activity) recyclerContext).startActivityForResult(intent,10002);
                 }
             });
         }

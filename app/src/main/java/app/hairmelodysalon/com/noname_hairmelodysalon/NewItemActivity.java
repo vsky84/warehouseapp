@@ -50,6 +50,17 @@ public class NewItemActivity extends AppCompatActivity {
         imageView = findViewById(R.id.imageView3);
         btnCreateItem = findViewById(R.id.new_item_btnCreate);
         btnCamera = findViewById(R.id.btnCamera);
+        if (getIntent().hasExtra("QRCODE")) {
+            Item item = getIntent().getExtras().getParcelable("QRCODE");
+            imageView.setImageBitmap(item.getPic());
+            txtId.setText(item.getId());
+            txtName.setText(item.getName());
+            txtStock.setText(String.valueOf(item.getStock()));
+            if(item.getCategory().equals("Hairdressing")) ;
+            else if(item.getCategory().equals("Shampoo & Conditioner")) groupCategory.check(R.id.new_item_shampoo_radio);
+            else if(item.getCategory().equals("Spa Supplies")) groupCategory.check(R.id.new_item_spa_radio);
+            else if(item.getCategory().equals("Treatment Supplies")) groupCategory.check(R.id.new_item_treatment_radio);
+        }
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

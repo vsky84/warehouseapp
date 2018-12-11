@@ -1,6 +1,8 @@
 package app.hairmelodysalon.com.noname_hairmelodysalon;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -37,15 +39,11 @@ public class QrcodeActivity extends AppCompatActivity implements View.OnClickLis
             if (Result.getContents() == null) {
                 Toast.makeText(this, "Hasil tidak ditemukan", Toast.LENGTH_SHORT).show();
             } else {
-                try {
-                    JSONObject object = new JSONObject(Result.getContents());
-                    textViewID.setText(object.getString("ID"));
-                    textViewItem.setText(object.getString("Item"));
-                    textViewStock.setText(object.getString("Stock"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(this, Result.getContents(), Toast.LENGTH_SHORT).show();
-                }
+                Bitmap defaultImg = (BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.boxicon));
+                String[] tokens = Result.getContents().split("\\+");
+                Item item = new Item(defaultImg,tokens[0],tokens[1],tokens[2],Integer.valueOf(tokens[3]));
+                Intent intent = new Intent();
+
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);

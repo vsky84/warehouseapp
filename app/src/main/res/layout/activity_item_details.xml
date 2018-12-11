@@ -17,31 +17,35 @@
         app:srcCompat="@drawable/boxicon" />
 
     <TextView
-        android:id="@+id/textView11"
-        android:layout_width="wrap_content"
+        android:id="@+id/textView_item_details_id"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="208dp"
-        android:layout_marginStart="19dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="150dp"
         android:layout_marginTop="16dp"
+        android:gravity="left"
         android:text="ID"
+        android:textAlignment="gravity"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView12"
-        android:layout_width="wrap_content"
+        android:id="@+id/textView_item_details_name"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="153dp"
-        android:layout_marginStart="19dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="150dp"
         android:layout_marginTop="16dp"
+        android:gravity="left"
         android:text="Item Name"
+        android:textAlignment="gravity"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_item_details_id" />
 
     <TextView
-        android:id="@+id/textView13"
+        android:id="@+id/textView_item_details_stock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="168dp"
@@ -51,7 +55,7 @@
         app:layout_constraintBottom_toTopOf="@+id/item_details_txtStock"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_item_details_name" />
 
     <Button
         android:id="@+id/item_details_btnMinus"
@@ -94,7 +98,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/item_details_btnAdd"
         app:layout_constraintStart_toEndOf="@+id/item_details_btnMinus"
-        app:layout_constraintTop_toBottomOf="@+id/textView13"
+        app:layout_constraintTop_toBottomOf="@+id/textView_item_details_stock"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
